@@ -1,4 +1,9 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Switch,
+  Navigate,
+} from "react-router-dom";
 
 import "./App.css";
 import StorePage from "./pages/Store";
@@ -7,6 +12,7 @@ import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
 import { CartProvider } from "./contexts/CartContext";
 import ContactUsPage from "./pages/ContactUs";
+import ProductDetailPage from "./pages/ProductDetail";
 
 const router = createBrowserRouter([
   {
@@ -14,10 +20,15 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { path: "/home", element: <HomePage /> },
-      { path: "/", element: <StorePage /> },
-      { path: "/store", element: <StorePage /> },
+      // navigate in V6; redirect in V5
+      { path: "/", element: <Navigate to="/store" replace /> },
+      { path: "/store", element: <StorePage />, exact: true },
       { path: "/about", element: <AboutPage /> },
       { path: "/contactus", element: <ContactUsPage /> },
+      {
+        path: "/store/:productId",
+        element: <ProductDetailPage />,
+      },
     ],
   },
 ]);

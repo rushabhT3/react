@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 
 const productsArr = [
@@ -55,22 +56,16 @@ const Products = ({ products }) => {
 const Product = ({ product }) => {
   const { addToCart } = useContext(CartContext);
 
-  const openModal = () => {
-    const modal = document.getElementById(`modal-${product.title}`);
-    const overlay = document.getElementById(`overlay-${product.title}`);
-    modal.classList.remove("hidden");
-    overlay.classList.remove("hidden");
-  };
-
   return (
     <div className="xl:w-1/4 md:w-1/2 p-4 relative">
       <div className="bg-gray-100 p-6 rounded-lg">
-        <img
-          className="h-40 rounded w-full object-cover object-center mb-6 cursor-pointer"
-          src={product.imageUrl}
-          alt="content"
-          onClick={openModal}
-        />
+        <Link to={`/store/${product.title}`} state={{ product: product }}>
+          <img
+            className="h-40 rounded w-full object-cover object-center mb-6 cursor-pointer"
+            src={product.imageUrl}
+            alt="content"
+          />
+        </Link>
         <h3 className="tracking-widest text-indigo-500 text-xs font-medium title-font">
           Price: ₹{product.price}
         </h3>
@@ -91,10 +86,7 @@ const Product = ({ product }) => {
         className="modal hidden fixed inset-0 flex items-center justify-center z-50"
       >
         <div className="modal-content max-w-full max-h-full p-4 bg-white rounded-lg">
-          <span
-            className="close absolute top-4 right-4 text-2xl cursor-pointer bg-red-500 text-white rounded-md p-2"
-            onClick={closeModal}
-          >
+          <span className="close absolute top-4 right-4 text-2xl cursor-pointer bg-red-500 text-white rounded-md p-2">
             &times;
           </span>
           <img
@@ -104,21 +96,8 @@ const Product = ({ product }) => {
           />
         </div>
       </div>
-      <div
-        id={`overlay-${product.title}`}
-        className="overlay hidden fixed inset-0 bg-black opacity-70 z-40"
-        onClick={closeModal}
-      ></div>
     </div>
   );
-};
-
-// Function to close the modal
-const closeModal = () => {
-  const modals = document.querySelectorAll(".modal");
-  const overlays = document.querySelectorAll(".overlay");
-  modals.forEach((modal) => modal.classList.add("hidden"));
-  overlays.forEach((overlay) => overlay.classList.add("hidden"));
 };
 
 export default Music;
