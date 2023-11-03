@@ -1,12 +1,12 @@
 import { useState, useRef, useContext } from "react";
-// import { useHistory } from "react-router";
+import { useHistory } from "react-router";
 
 import classes from "./AuthForm.module.css";
 // import { API_KEY } from "../../constants";
 import AuthContext from "../../store/auth-context";
 
 const AuthForm = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -50,6 +50,7 @@ const AuthForm = () => {
         const data = await res.json();
         // console.log({ data });
         authContext.login(data.idToken);
+        history.replace("/");
       } else {
         // const data = await res.json();
         // if (data && data.error && data.error.message){
