@@ -7,7 +7,7 @@ const AboutPage = () => {
           <img
             class="object-cover object-center rounded"
             alt="hero"
-            src="https://prasadyash2411.github.io/ecom-website/img/Band%20Members.png"
+            src="https://media.tenor.com/rZLorBYWQ6EAAAAd/elvish-yadav-elvish-bhai.gif"
           />
         </div>
         <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">

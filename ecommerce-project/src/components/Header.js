@@ -75,6 +75,16 @@ const Header = () => {
                 ? "mr-5 flex items-center justify-center text-blue-600 dark:text-blue-500 hover:underline"
                 : "mr-5 flex items-center justify-center hover:text-gray-900"
             }
+            to="/login"
+          >
+            Login
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "mr-5 flex items-center justify-center text-blue-600 dark:text-blue-500 hover:underline"
+                : "mr-5 flex items-center justify-center hover:text-gray-900"
+            }
             to="/contactus"
           >
             Contact Us

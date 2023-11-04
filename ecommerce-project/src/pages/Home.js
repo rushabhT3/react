@@ -52,7 +52,7 @@ const HomePage = () => {
                   <img
                     className="w-8 h-8 rounded-full"
                     src="https://placekitten.com/80/80"
-                    alt="Concert image"
+                    alt="Concert"
                   />
                 </div>
                 <div className="flex-1 min-w-0 bg-gray-100 p-4 rounded-lg shadow-md">

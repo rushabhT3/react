@@ -1,18 +1,20 @@
 import {
   createBrowserRouter,
   RouterProvider,
-  Switch,
   Navigate,
 } from "react-router-dom";
 
 import "./App.css";
+import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "./store/auth-context";
+
 import StorePage from "./pages/Store";
 import AboutPage from "./pages/About";
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
-import { CartProvider } from "./contexts/CartContext";
 import ContactUsPage from "./pages/ContactUs";
 import ProductDetailPage from "./pages/ProductDetail";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -29,15 +31,18 @@ const router = createBrowserRouter([
         path: "/store/:productId",
         element: <ProductDetailPage />,
       },
+      { path: "/login", element: <Login /> },
     ],
   },
 ]);
 
 function App() {
   return (
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
