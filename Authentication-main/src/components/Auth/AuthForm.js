@@ -48,7 +48,7 @@ const AuthForm = () => {
       setIsLoading(false);
       if (res.ok) {
         const data = await res.json();
-        // console.log({ data });
+        console.log({ data });
         authContext.login(data.idToken);
         history.replace("/");
       } else {
