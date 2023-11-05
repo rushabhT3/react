@@ -3,10 +3,13 @@ import { NavLink } from "react-router-dom";
 
 import Cart from "./Cart";
 import { CartContext } from "../contexts/CartContext";
+import AuthContext from "../store/auth-context";
 
 const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { cartElements } = useContext(CartContext);
+  const authCtx = useContext(AuthContext);
+  const isLoggedin = authCtx.isLoggedIn;
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
@@ -48,16 +51,18 @@ const Header = () => {
           >
             Home
           </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? "mr-5 flex items-center justify-center text-blue-600 dark:text-blue-500 hover:underline"
-                : "mr-5 flex items-center justify-center hover:text-gray-900"
-            }
-            to="/store"
-          >
-            Store
-          </NavLink>
+          {isLoggedin && (
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "mr-5 flex items-center justify-center text-blue-600 dark:text-blue-500 hover:underline"
+                  : "mr-5 flex items-center justify-center hover:text-gray-900"
+              }
+              to="/store"
+            >
+              Store
+            </NavLink>
+          )}
           <NavLink
             // className="mr-5 flex items-center justify-center hover:text-gray-900"
             className={({ isActive }) =>

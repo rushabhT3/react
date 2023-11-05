@@ -11,10 +11,11 @@ export const AuthProvider = (props) => {
   const storedToken = localStorage.getItem("token");
   const [token, setToken] = useState(storedToken);
   const userLoggedIn = !!token;
+  console.log({ userLoggedIn });
 
   const login = (token) => {
     setToken(token);
-    localStorage.getItem("token", token);
+    localStorage.setItem("token", token);
   };
   const logout = () => {
     setToken(null);
@@ -26,6 +27,7 @@ export const AuthProvider = (props) => {
     login: login,
     logout: logout,
   };
+  console.log({ ctxtValue });
   return (
     <AuthContext.Provider value={ctxtValue}>
       {props.children}
