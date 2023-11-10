@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -9,13 +9,14 @@ import "./App.css";
 import { CartProvider } from "./contexts/CartContext";
 import AuthContext from "./store/auth-context";
 
-import StorePage from "./pages/Store";
-import AboutPage from "./pages/About";
-import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
-import ContactUsPage from "./pages/ContactUs";
-import ProductDetailPage from "./pages/ProductDetail";
 import Login from "./pages/Login";
+
+const HomePage = lazy(() => import("./pages/Home"));
+const StorePage = lazy(() => import("./pages/Store"));
+const AboutPage = lazy(() => import("./pages/About"));
+const ContactUsPage = lazy(() => import("./pages/ContactUs"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetail"));
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -26,8 +27,14 @@ function App() {
       path: "/",
       element: <RootLayout />,
       children: [
-        { path: "/home", element: <HomePage /> },
-        // navigate in V6; redirect in V5
+        {
+          path: "/home",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <HomePage />
+            </Suspense>
+          ),
+        },
         {
           path: "/",
           element: isLoggedin ? (
@@ -39,23 +46,48 @@ function App() {
         {
           path: "/store",
           element: isLoggedin ? (
-            <StorePage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <StorePage />
+            </Suspense>
           ) : (
             <Navigate to="/login" replace />
           ),
           exact: true,
         },
-        { path: "/about", element: <AboutPage /> },
-        { path: "/contactus", element: <ContactUsPage /> },
+        {
+          path: "/about",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <AboutPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/contactus",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <ContactUsPage />
+            </Suspense>
+          ),
+        },
         {
           path: "/store/:productId",
           element: isLoggedin ? (
-            <ProductDetailPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProductDetailPage />
+            </Suspense>
           ) : (
             <Navigate to="/login" replace />
           ),
         },
-        { path: "/login", element: <Login /> },
+        {
+          path: "/login",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Login />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);
