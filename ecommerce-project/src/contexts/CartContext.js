@@ -1,52 +1,88 @@
 import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const CartContext = createContext();
+const crudCrudUrl = "https://crudcrud.com/api/573c89d7191c4c73977ee4f14fd51b73";
 
 export const CartProvider = ({ children }) => {
-  const [cartElements, setCartElements] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  );
+  const [cartElements, setCartElements] = useState([]);
 
-  // uef snippet
+  const extractEmailFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const base64UrlEncodedPayload = token.split(".")[1];
+      const base64DecodedPayload = atob(base64UrlEncodedPayload);
+      const payloadJson = JSON.parse(base64DecodedPayload);
+      return payloadJson.email.replace(/[.@]/g, "");
+    }
+    return null;
+  };
+  const tokenEmail = extractEmailFromToken();
+
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartElements));
-  }, [cartElements]);
+    const fetchCart = async () => {
+      const { data } = await axios.get(`${crudCrudUrl}/cart${tokenEmail}`);
+      console.log(data[0]);
+      setCartElements(data[0].newCart);
+    };
+    fetchCart();
+  }, []);
 
-  const updateCart = (newCart) => {
+  const updateCart = async (newCart) => {
+    try {
+      const getCart = await axios.get(`${crudCrudUrl}/cart${tokenEmail}`);
+      // console.log({ getCart });
+      const cartId = localStorage.getItem("newCartId");
+      const response = await axios.put(
+        `${crudCrudUrl}/cart${tokenEmail}/${cartId}`,
+        { newCart }
+      );
+      // console.log({ response });
+    } catch (error) {
+      // if (error.response && error.response.status === 404) {
+      const { data } = await axios.post(`${crudCrudUrl}/cart${tokenEmail}`, {
+        newCart,
+      });
+      // console.log({ data });
+      localStorage.setItem("newCartId", data._id);
+      // } else {
+      //   console.error(error);
+      // }
+    }
     setCartElements(newCart);
   };
 
-  const addToCart = (item) => {
-    const updatedCart = [...cartElements];
-    // Check if the item is already in the cart
-    const itemIndex = updatedCart.findIndex((el) => el.title === item.title);
+  const addToCart = async (item) => {
+    const newCart = [...cartElements];
+    const itemIndex = newCart.findIndex(
+      (cartItem) => cartItem.title === item.title
+    );
     if (itemIndex !== -1) {
-      // If the item exists, update its quantity
-      updatedCart[itemIndex].quantity++;
+      newCart[itemIndex] = {
+        ...newCart[itemIndex],
+        quantity: newCart[itemIndex].quantity + 1,
+      };
     } else {
-      // If the item is not in the cart, add it with a quantity of 1
-      updatedCart.push({ ...item, quantity: 1 });
+      newCart.push({ ...item, quantity: 1 });
     }
-    setCartElements(updatedCart);
+    await updateCart(newCart);
   };
 
-  const removeFromCart = (index) => {
-    // Create a new array without the item to remove
-    const updatedCart = [...cartElements];
-    updatedCart.splice(index, 1);
-    updateCart(updatedCart);
+  const removeFromCart = async (index) => {
+    const newCart = [...cartElements];
+    newCart.splice(index, 1);
+    await updateCart(newCart);
   };
 
-  const decreaseQuantity = (index) => {
-    const updatedCart = [...cartElements];
-    const item = updatedCart[index];
+  const decreaseQuantity = async (index) => {
+    const newCart = [...cartElements];
+    const item = newCart[index];
     if (item.quantity > 1) {
-      item.quantity--; // Decrease the quantity by one
+      item.quantity--;
     } else {
-      // If the quantity is 1, remove the entire element
-      updatedCart.splice(index, 1);
+      newCart.splice(index, 1);
     }
-    updateCart(updatedCart);
+    await updateCart(newCart);
   };
 
   return (
