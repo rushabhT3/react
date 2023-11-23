@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import CartContext from "../contexts/CartContext";
 
-function List({ list, QuantityHandler, AddToCartHandler }) {
+function List() {
+  const { list, QuantityHandler, AddToCartHandler } = useContext(CartContext);
+  console.log({ list });
+
   return (
     <div>
       {list.map((item) => (

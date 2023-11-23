@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
-import CartContext from "../contexts/CartContext";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const crudCrudUrl = process.env.REACT_APP_CRUD_CRUD_URL;
 
 const Cart = () => {
-  // const cartItems = useContext(CartContext);
   const [cartShow, setCartShow] = useState(false);
   const [cart, setCart] = useState([]);
 
