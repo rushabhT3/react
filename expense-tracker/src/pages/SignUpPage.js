@@ -31,6 +31,7 @@ function SignUpPage() {
 
       const data = await response.json();
       console.log("Signup Response:", data);
+      alert("successfully signed up 🎉");
 
       setEmail("");
       setPassword("");
@@ -63,6 +64,7 @@ function SignUpPage() {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   className="mt-1 p-3 w-full border rounded-md"
+                  required
                 />
               </div>
 
@@ -74,6 +76,7 @@ function SignUpPage() {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   className="mt-1 p-3 w-full border rounded-md"
+                  required
                 />
               </div>
 
@@ -85,6 +88,7 @@ function SignUpPage() {
                   value={confirmPassword}
                   onChange={(event) => setConfirmPassword(event.target.value)}
                   className="mt-1 p-3 w-full border rounded-md"
+                  required
                 />
               </div>
 
