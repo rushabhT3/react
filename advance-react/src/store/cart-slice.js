@@ -12,7 +12,7 @@ const cartSlice = createSlice({
       const existingItem = state.items.find((item) => item.id === newItem.id);
       state.totalQuantity++;
       if (!existingItem) {
-        // ^ this .push would not work with redux but with toolkit the immer produces new internally hence it's ok
+        // ^ .push is invalid in redux but redux toolkit uses immer to make a new item internally
         state.items.push({
           id: newItem.id,
           price: newItem.price,
@@ -26,7 +26,15 @@ const cartSlice = createSlice({
       }
     },
     removeItemFromCart(state, action) {
-      
+      const id = action.payload;
+      const existingItem = state.items.find(item => item.id === id);
+      state.totalQuantity--;
+      if (existingItem.quantity === 1) {
+        state.items = state.items.filter(item => item.id !== id);
+      } else {
+        existingItem.quantity--;
+        existingItem.totalPrice -= existingItem.price;
+      }
     },
   },
 });
